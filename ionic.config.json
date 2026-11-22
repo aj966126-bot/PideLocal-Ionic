@@ -1,0 +1,7 @@
+{
+  "name": "PideLocal-Ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

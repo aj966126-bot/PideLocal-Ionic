@@ -1,0 +1,403 @@
+
+:host {
+  --ion-font-family: Arial, sans-serif;
+}
+
+ion-content {
+  --background: #fbfbfa;
+}
+
+.pantalla-seguimiento {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100%;
+  padding: 45px 22px 35px;
+}
+
+.cabecera-exito {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h1 {
+    color: #222724;
+    font-size: 27px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 18px 0 12px;
+  }
+
+  p {
+    color: #858a86;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 20px;
+  }
+}
+
+.icono-exito {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #222724;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 43px;
+  }
+}
+
+.numero-pedido {
+  display: inline-flex;
+  padding: 12px 18px;
+  background: #eceeec;
+  color: #222724;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.tiempo-estimado {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 20px;
+  border: 1px solid #d9dcd9;
+  background: white;
+  border-radius: 13px;
+  margin-bottom: 32px;
+
+  .icono-tiempo {
+    width: 49px;
+    height: 49px;
+    min-width: 49px;
+    background: #e9ebe9;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 27px;
+      color: #222724;
+    }
+  }
+
+  small {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #858a86;
+    margin-bottom: 7px;
+    letter-spacing: 0.5px;
+  }
+
+  strong {
+    color: #222724;
+    font-size: 20px;
+    font-weight: 800;
+  }
+}
+
+.seguimiento {
+  padding: 22px 19px 8px;
+  border: 1px solid #e1e3e1;
+  border-radius: 13px;
+  background: white;
+}
+
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+
+  h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #222724;
+    margin: 0;
+  }
+
+  span {
+    color: #858a86;
+    font-size: 11px;
+  }
+}
+
+.etapa {
+  display: flex;
+  gap: 16px;
+  min-height: 92px;
+}
+
+.indicador {
+  width: 30px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circulo-etapa {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 50%;
+  background: #e9ebe9;
+  border: 1px solid #d9dcd9;
+  color: #858a86;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 800;
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+.linea-etapa {
+  width: 2px;
+  flex: 1;
+  min-height: 35px;
+  margin: 5px 0;
+  background: #dfe2df;
+}
+
+.etapa.completada,
+.etapa.actual {
+  .circulo-etapa {
+    background: #222724;
+    border-color: #222724;
+    color: white;
+  }
+}
+
+.etapa.completada .linea-etapa {
+  background: #222724;
+}
+
+.texto-etapa {
+  flex: 1;
+  padding-bottom: 23px;
+
+  h3 {
+    color: #222724;
+    font-size: 14px;
+    font-weight: 800;
+    margin: 5px 0 7px;
+  }
+
+  p {
+    color: #858a86;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.estado-actual {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #e9ebe9;
+  color: #222724;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.resumen-pedido,
+.informacion-adicional,
+.simulacion {
+  margin-top: 24px;
+  padding: 21px;
+  border: 1px solid #e1e3e1;
+  border-radius: 13px;
+  background: white;
+}
+
+.titulo-resumen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #222724;
+    margin: 0;
+  }
+
+  ion-icon {
+    color: #777c78;
+    font-size: 24px;
+  }
+}
+
+.nombre-restaurante {
+  font-size: 12px;
+  color: #858a86;
+  margin: 9px 0 23px;
+}
+
+.producto,
+.fila-resumen,
+.detalle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #777c78;
+
+  strong {
+    color: #222724;
+    font-weight: 700;
+    text-align: right;
+  }
+}
+
+.nombre-producto {
+  color: #4e534f;
+}
+
+.separador {
+  height: 1px;
+  background: #e1e3e1;
+  margin: 20px 0;
+}
+
+.total {
+  margin-top: 20px;
+  margin-bottom: 0;
+  padding-top: 17px;
+  border-top: 1px solid #e1e3e1;
+  color: #222724;
+  font-size: 17px;
+  font-weight: 800;
+
+  strong {
+    font-size: 20px;
+    font-weight: 800;
+  }
+}
+
+.informacion-adicional h2,
+.simulacion h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #222724;
+  margin: 0 0 20px;
+}
+
+.informacion-adicional .detalle {
+  margin-bottom: 15px;
+
+  strong {
+    max-width: 65%;
+    overflow-wrap: anywhere;
+  }
+}
+
+.simulacion {
+  background: #f1f3f1;
+
+  p {
+    color: #777c78;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0 0 17px;
+  }
+}
+
+.boton-simular,
+.boton-inicio {
+  --background: #222724;
+  --color: white;
+  --border-radius: 10px;
+  --box-shadow: none;
+  text-transform: none;
+  font-weight: 700;
+  height: 50px;
+}
+
+.boton-inicio {
+  margin-top: 25px;
+}
+
+.simulacion-terminada {
+  font-weight: 800;
+  color: #222724 !important;
+}
+
+.aviso-academico {
+  color: #969a97;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.6;
+  padding: 15px 0;
+}
+
+.sin-pedido {
+  padding: 90px 15px 30px;
+  text-align: center;
+
+  .icono-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #e9ebe9;
+    color: #222724;
+    margin: 0 auto 25px;
+
+    ion-icon {
+      font-size: 48px;
+    }
+  }
+
+  h1 {
+    color: #222724;
+    font-size: 23px;
+    font-weight: 800;
+  }
+
+  p {
+    color: #858a86;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pantalla-seguimiento {
+    padding: 32px 14px;
+  }
+
+  .cabecera-exito h1 {
+    font-size: 23px;
+  }
+
+  .tiempo-estimado,
+  .resumen-pedido,
+  .informacion-adicional,
+  .simulacion {
+    padding: 16px;
+  }
+
+  .seguimiento {
+    padding: 18px 14px 5px;
+  }
+}

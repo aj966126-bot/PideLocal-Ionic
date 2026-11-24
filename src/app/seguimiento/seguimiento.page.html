@@ -1,0 +1,257 @@
+
+<ion-content [fullscreen]="true">
+
+  <main class="pantalla-seguimiento">
+
+    <ng-container *ngIf="pedido; else sinPedido">
+
+      <div class="cabecera-exito">
+
+        <div class="icono-exito">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+
+        <h1>{{ tituloEstado }}</h1>
+
+        <p>
+          {{ pedido.restaurante }} recibió tu solicitud
+          de demostración.
+        </p>
+
+        <div class="numero-pedido">
+          PEDIDO #{{ pedido.numero }}
+        </div>
+
+      </div>
+
+      <section class="tiempo-estimado">
+
+        <div class="icono-tiempo">
+          <ion-icon name="time-outline"></ion-icon>
+        </div>
+
+        <div>
+          <small>TIEMPO ESTIMADO DE REFERENCIA</small>
+          <strong>25–35 minutos</strong>
+        </div>
+
+      </section>
+
+      <section class="seguimiento">
+
+        <div class="titulo-seccion">
+          <h2>Estado de tu pedido</h2>
+          <span>Demostración</span>
+        </div>
+
+        <div
+          *ngFor="let etapa of etapas; let i = index"
+          class="etapa"
+          [class.completada]="i < etapaActual"
+          [class.actual]="i === etapaActual">
+
+          <div class="indicador">
+
+            <div class="circulo-etapa">
+              <ion-icon
+                *ngIf="i <= etapaActual"
+                name="checkmark-outline">
+              </ion-icon>
+
+              <span *ngIf="i > etapaActual">
+                {{ i + 1 }}
+              </span>
+            </div>
+
+            <div
+              *ngIf="i < etapas.length - 1"
+              class="linea-etapa">
+            </div>
+
+          </div>
+
+          <div class="texto-etapa">
+
+            <h3>{{ etapa.titulo }}</h3>
+            <p>{{ etapa.descripcion }}</p>
+
+            <span
+              class="estado-actual"
+              *ngIf="i === etapaActual">
+              Estado actual
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="resumen-pedido">
+
+        <div class="titulo-resumen">
+          <h2>Resumen de tu pedido</h2>
+          <ion-icon name="receipt-outline"></ion-icon>
+        </div>
+
+        <p class="nombre-restaurante">
+          {{ pedido.restaurante }}
+        </p>
+
+        <div
+          class="producto"
+          *ngFor="let producto of pedido.productos">
+
+          <span class="nombre-producto">
+            {{ producto.cantidad }} × {{ producto.nombre }}
+          </span>
+
+          <strong>
+            RD${{ producto.precio * producto.cantidad }}
+          </strong>
+
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="fila-resumen">
+          <span>Subtotal</span>
+          <strong>RD${{ pedido.subtotal }}</strong>
+        </div>
+
+        <div class="fila-resumen">
+          <span>
+            {{ pedido.modalidad === 'entrega'
+              ? 'Envío'
+              : 'Recogida' }}
+          </span>
+
+          <strong>
+            {{ pedido.envio === 0
+              ? 'Gratis'
+              : 'RD$' + pedido.envio }}
+          </strong>
+        </div>
+
+        <div class="fila-resumen total">
+          <span>Total</span>
+          <strong>RD${{ pedido.total }}</strong>
+        </div>
+
+      </section>
+
+      <section class="informacion-adicional">
+
+        <h2>Detalles de la solicitud</h2>
+
+        <div class="detalle">
+          <span>Modalidad</span>
+          <strong>
+            {{ pedido.modalidad === 'entrega'
+              ? 'Entrega'
+              : 'Recogida' }}
+          </strong>
+        </div>
+
+        <div class="detalle">
+          <span>Dirección</span>
+          <strong>{{ pedido.direccion }}</strong>
+        </div>
+
+        <div class="detalle">
+          <span>Pago</span>
+          <strong>{{ pedido.pago }}</strong>
+        </div>
+
+        <div class="detalle" *ngIf="pedido.instrucciones">
+          <span>Instrucciones</span>
+          <strong>{{ pedido.instrucciones }}</strong>
+        </div>
+
+      </section>
+
+      <section class="simulacion">
+
+        <h2>Simulador de seguimiento</h2>
+
+        <p>
+          Para la actividad universitaria puedes avanzar
+          manualmente los estados del pedido. Estos cambios
+          no representan una actualización de un restaurante real.
+        </p>
+
+        <ion-button
+          *ngIf="etapaActual < 3"
+          expand="block"
+          class="boton-simular"
+          (click)="avanzarEstado()">
+
+          Simular siguiente estado
+
+          <ion-icon
+            slot="end"
+            name="arrow-forward-outline">
+          </ion-icon>
+
+        </ion-button>
+
+        <p
+          *ngIf="etapaActual === 3"
+          class="simulacion-terminada">
+          Todos los estados de demostración fueron completados.
+        </p>
+
+      </section>
+
+      <ion-button
+        expand="block"
+        class="boton-inicio"
+        (click)="volverInicio()">
+
+        <ion-icon
+          name="home-outline"
+          slot="start">
+        </ion-icon>
+
+        Volver al inicio
+
+      </ion-button>
+
+      <p class="aviso-academico">
+        PideLocal es un prototipo académico.
+        No se ha enviado ni cobrado ningún pedido real.
+      </p>
+
+    </ng-container>
+
+    <ng-template #sinPedido>
+
+      <div class="sin-pedido">
+
+        <div class="icono-vacio">
+          <ion-icon name="bag-handle-outline"></ion-icon>
+        </div>
+
+        <h1>No tienes pedidos registrados</h1>
+
+        <p>
+          Cuando confirmes un pedido de demostración
+          podrás consultar su seguimiento aquí.
+        </p>
+
+        <ion-button
+          expand="block"
+          class="boton-inicio"
+          (click)="explorarMenu()">
+
+          Explorar restaurantes
+
+        </ion-button>
+
+      </div>
+
+    </ng-template>
+
+  </main>
+
+</ion-content>

@@ -1,0 +1,345 @@
+
+:host {
+  --ion-font-family: Arial, sans-serif;
+}
+
+ion-content {
+  --background: #fbfbfa;
+}
+
+.pantalla-restaurante {
+  max-width: 600px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding-bottom: 35px;
+}
+
+.portada {
+  height: 235px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #747a75,
+    #b4b9b5
+  );
+}
+
+.botones-portada {
+  position: absolute;
+  z-index: 2;
+  top: 25px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.boton-circular {
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  color: #222724;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 23px;
+  }
+}
+
+.imagen-portada {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 110px;
+}
+
+.tarjeta-informacion {
+  margin: 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: none;
+  background: white;
+  border-bottom: 1px solid #e3e5e3;
+}
+
+.tarjeta-informacion ion-card-content {
+  padding: 22px 20px;
+}
+
+.nombre-restaurante {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  h1 {
+    font-size: 27px;
+    font-weight: 800;
+    color: #222724;
+    margin: 0;
+  }
+}
+
+.estado-abierto {
+  --background: #e8ebe8;
+  --color: #343a35;
+  font-size: 9px;
+  font-weight: 800;
+  height: 24px;
+  margin: 0;
+}
+
+.descripcion-restaurante {
+  font-size: 14px;
+  color: #7b807c;
+  margin: 10px 0 22px;
+}
+
+.informacion-entrega {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid #e1e3e1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dato {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  border-right: 1px solid #e1e3e1;
+  color: #222724;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  ion-icon {
+    font-size: 17px;
+  }
+
+  strong {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  small {
+    color: #858a86;
+    font-size: 10px;
+  }
+}
+
+.calificacion {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  ion-icon {
+    font-size: 15px;
+  }
+}
+
+.categorias-menu {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 22px 20px 0;
+  border-bottom: 1px solid #e0e2e0;
+  scrollbar-width: none;
+
+  button {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0 0 14px;
+    white-space: nowrap;
+    color: #858a86;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &.activa {
+      border-bottom-color: #222724;
+      color: #222724;
+      font-weight: 800;
+    }
+  }
+}
+
+.titulo-menu {
+  padding: 25px 20px 15px;
+
+  h2 {
+    font-size: 23px;
+    font-weight: 800;
+    color: #222724;
+    margin: 0 0 7px;
+  }
+
+  p {
+    color: #858a86;
+    font-size: 13px;
+    margin: 0;
+  }
+}
+
+.lista-platos {
+  background: transparent;
+  padding: 0 14px;
+}
+
+.plato {
+  --background: #ffffff;
+  --padding-start: 10px;
+  --inner-padding-end: 8px;
+  --min-height: 125px;
+  margin-bottom: 10px;
+  border: 1px solid #e1e3e1;
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.foto-plato {
+  width: 85px;
+  height: 85px;
+  min-width: 85px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(
+    135deg,
+    #d5d8d5,
+    #eceeec
+  );
+  font-size: 43px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.datos-plato {
+  min-width: 0;
+
+  h3 {
+    color: #222724;
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  p {
+    white-space: normal;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #858a86;
+    margin-bottom: 9px;
+  }
+
+  strong {
+    display: block;
+    color: #222724;
+    font-size: 14px;
+    font-weight: 800;
+  }
+}
+
+.boton-agregar {
+  --background: #222724;
+  --color: white;
+  --border-radius: 8px;
+  --box-shadow: none;
+  text-transform: none;
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+.nota-demo {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 20px;
+  padding: 13px;
+  border: 1px solid #e1e3e1;
+  border-radius: 10px;
+  color: #777c78;
+
+  ion-icon {
+    font-size: 19px;
+    flex-shrink: 0;
+  }
+
+  p {
+    font-size: 11px;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.pie-carrito {
+  background: white;
+  border-top: 1px solid #e1e3e1;
+}
+
+.contenedor-pie {
+  max-width: 600px;
+  padding: 12px 18px;
+  margin: 0 auto;
+}
+
+.boton-carrito {
+  --background: #222724;
+  --color: white;
+  --border-radius: 11px;
+  --box-shadow: none;
+  height: 54px;
+  text-transform: none;
+  font-weight: 700;
+
+  span {
+    flex: 1;
+    text-align: left;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .portada {
+    height: 190px;
+  }
+
+  .foto-plato {
+    width: 65px;
+    min-width: 65px;
+    height: 75px;
+    font-size: 34px;
+    margin-right: 7px;
+  }
+
+  .datos-plato h3 {
+    font-size: 13px;
+  }
+
+  .boton-agregar {
+    font-size: 9px;
+    --padding-start: 7px;
+    --padding-end: 7px;
+  }
+
+  .informacion-entrega .dato strong {
+    font-size: 12px;
+  }
+}

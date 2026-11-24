@@ -1,0 +1,225 @@
+
+<ion-content [fullscreen]="true">
+
+  <div class="pantalla-restaurante">
+
+    <div class="portada">
+
+      <div class="botones-portada">
+
+        <button
+          type="button"
+          class="boton-circular"
+          aria-label="Volver a restaurantes"
+          (click)="volver()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </button>
+
+        <button
+          type="button"
+          class="boton-circular"
+          aria-label="Agregar o quitar favorito"
+          (click)="alternarFavorito()">
+          <ion-icon
+            [name]="favorito ? 'heart' : 'heart-outline'">
+          </ion-icon>
+        </button>
+
+      </div>
+
+      <div class="imagen-portada">
+        🍔
+      </div>
+
+    </div>
+
+    <ion-card class="tarjeta-informacion">
+
+      <ion-card-content>
+
+        <div class="nombre-restaurante">
+
+          <h1>Burger Patio</h1>
+
+          <ion-chip class="estado-abierto">
+            DEMOSTRACIÓN
+          </ion-chip>
+
+        </div>
+
+        <p class="descripcion-restaurante">
+          Hamburguesas artesanales · $$
+        </p>
+
+        <div class="informacion-entrega">
+
+          <div class="dato">
+            <ion-icon name="time-outline"></ion-icon>
+            <strong>20–30 min</strong>
+            <small>Entrega estimada</small>
+          </div>
+
+          <div class="dato">
+            <strong>RD$60</strong>
+            <small>Envío</small>
+          </div>
+
+          <div class="dato">
+            <div class="calificacion">
+              <ion-icon name="star"></ion-icon>
+              <strong>4.8</strong>
+            </div>
+            <small>Ejemplo</small>
+          </div>
+
+        </div>
+
+      </ion-card-content>
+
+    </ion-card>
+
+    <div class="categorias-menu">
+
+      <button
+        type="button"
+        [class.activa]="categoriaSeleccionada === 'Todos'"
+        (click)="seleccionarCategoria('Todos')">
+        Populares
+      </button>
+
+      <button
+        type="button"
+        [class.activa]="categoriaSeleccionada === 'Hamburguesas'"
+        (click)="seleccionarCategoria('Hamburguesas')">
+        Hamburguesas
+      </button>
+
+      <button
+        type="button"
+        [class.activa]="categoriaSeleccionada === 'Complementos'"
+        (click)="seleccionarCategoria('Complementos')">
+        Complementos
+      </button>
+
+    </div>
+
+    <div class="titulo-menu">
+
+      <h2>
+        {{ categoriaSeleccionada === 'Todos'
+          ? 'Populares'
+          : categoriaSeleccionada }}
+      </h2>
+
+      <p>Los favoritos del barrio</p>
+
+    </div>
+
+    <ion-list class="lista-platos">
+
+      <ion-item-sliding
+        *ngFor="let producto of productosFiltrados"
+        #deslizable>
+
+        <ion-item lines="none" class="plato">
+
+          <button
+            type="button"
+            class="foto-plato"
+            slot="start"
+            [attr.aria-label]="'Ver ' + producto.nombre"
+            (click)="verDetalle(producto)">
+            {{ producto.emoji }}
+          </button>
+
+          <ion-label class="datos-plato">
+
+            <h3>{{ producto.nombre }}</h3>
+
+            <p>{{ producto.descripcion }}</p>
+
+            <strong>
+              RD${{ producto.precio }}
+            </strong>
+
+          </ion-label>
+
+          <ion-button
+            slot="end"
+            size="small"
+            class="boton-agregar"
+            (click)="agregarProducto(producto, deslizable)">
+
+            <ion-icon
+              name="add-outline"
+              slot="start">
+            </ion-icon>
+
+            Agregar
+
+          </ion-button>
+
+        </ion-item>
+
+        <ion-item-options side="end">
+
+          <ion-item-option
+            color="dark"
+            (click)="agregarProducto(producto, deslizable)">
+
+            <ion-icon
+              slot="top"
+              name="bag-handle-outline">
+            </ion-icon>
+
+            Agregar
+
+          </ion-item-option>
+
+        </ion-item-options>
+
+      </ion-item-sliding>
+
+    </ion-list>
+
+    <div class="nota-demo">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <p>
+        Restaurante y precios ficticios utilizados
+        para la demostración académica de PideLocal.
+      </p>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer
+  class="pie-carrito"
+  *ngIf="cantidadCarrito > 0">
+
+  <div class="contenedor-pie">
+
+    <ion-button
+      expand="block"
+      class="boton-carrito"
+      (click)="abrirCarrito()">
+
+      <ion-icon
+        name="bag-handle-outline"
+        slot="start">
+      </ion-icon>
+
+      <span>
+        Ver carrito · {{ cantidadCarrito }}
+      </span>
+
+      <strong slot="end">
+        RD${{ subtotal }}
+      </strong>
+
+    </ion-button>
+
+  </div>
+
+</ion-footer>

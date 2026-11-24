@@ -1,27 +1,372 @@
-#container {
-  text-align: center;
 
+:host {
+  --ion-font-family: 'Arial', sans-serif;
+}
+
+ion-content {
+  --background: #fbfbfa;
+}
+
+.pantalla {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 20px 125px;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.saludo {
+  span {
+    color: #7e837f;
+    font-size: 13px;
+  }
+
+  h1 {
+    margin: 5px 0 0;
+    font-size: 27px;
+    font-weight: 800;
+    color: #1c211e;
+    letter-spacing: -0.5px;
+  }
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #c8cbc8;
+  border-radius: 50%;
+  background: #eceeec;
+  color: #222724;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 23px;
+  }
+}
+
+.ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: white;
+  border: 1px solid #d5d8d5;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  color: #222724;
+
+  > ion-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  div {
+    flex: 1;
+
+    small {
+      display: block;
+      color: #858a86;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    strong {
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  .flecha {
+    color: #858a86;
+    font-size: 17px;
+  }
+}
+
+ion-searchbar {
+  --background: #e9ebe9;
+  --color: #222724;
+  --placeholder-color: #777c78;
+  --icon-color: #777c78;
+  --border-radius: 12px;
+  --box-shadow: none;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #1c211e;
+    margin: 0;
+  }
+
+  button {
+    color: #666b67;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  ion-badge {
+    --background: #eceeec;
+    --color: #666b67;
+    font-size: 11px;
+    padding: 7px 10px;
+    border-radius: 8px;
+  }
+}
+
+.categorias-seccion {
+  margin-bottom: 30px;
+}
+
+.categorias {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.categoria {
+  border: none;
+  background: transparent;
+  padding: 0;
+  min-width: 0;
+  cursor: pointer;
+
+  .categoria-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    width: 100%;
+    background: #f2f3f2;
+    border: 1px solid #d9dcd9;
+    border-radius: 11px;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10px;
+    color: #666b67;
+  }
+
+  &.activa {
+    .categoria-icono {
+      border: 2px solid #222724;
+      background: #e7eae7;
+    }
+
+    small {
+      color: #222724;
+      font-weight: 800;
+    }
+  }
+}
+
+.lista-restaurantes {
+  background: transparent;
+  padding: 0;
+}
+
+.tarjeta-restaurante {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0 13px;
+  border: 1px solid #d9dcd9;
+  border-radius: 12px;
+  box-shadow: none;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  min-height: 115px;
+}
+
+.foto-restaurante {
+  position: relative;
+  width: 115px;
+  min-width: 115px;
+  background: linear-gradient(145deg, #b9bfba, #e1e4e1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .comida-icono {
+    font-size: 46px;
+  }
+}
+
+.etiqueta-popular {
   position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #282d29;
+  color: white;
+  padding: 4px 7px;
+  border-radius: 4px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+ion-card-content {
+  flex: 1;
+  padding: 15px 12px;
+  min-width: 0;
+}
+
+.nombre-restaurante {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+
+  h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #222724;
+    margin: 0;
+  }
+}
+
+.favorito {
+  background: transparent;
+  border: 0;
+  color: #222724;
+  padding: 4px;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 19px;
+  }
+}
+
+.descripcion {
+  font-size: 12px;
+  color: #7b807c;
+  margin: 8px 0 13px;
+}
+
+.informacion {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #444a45;
+
+  ion-icon {
+    font-size: 14px;
+  }
+
+  .punto {
+    margin: 0 3px;
+  }
+}
+
+.sin-resultados {
+  text-align: center;
+  padding: 40px 15px;
+  color: #777c78;
+
+  > ion-icon {
+    font-size: 42px;
+  }
+
+  h3 {
+    color: #222724;
+    font-size: 17px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+
+.fab-carrito {
+  margin-bottom: 66px;
+  margin-right: 10px;
+}
+
+ion-fab-button {
+  --background: #222724;
+  --color: white;
+  --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.navegacion-inferior {
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  z-index: 10;
+  height: 70px;
+  background: white;
+  border-top: 1px solid #dfe1df;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  button {
+    border: none;
+    background: transparent;
+    color: #8a8f8b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 22px;
+    }
+
+    &.activo {
+      color: #222724;
+      font-weight: 800;
+    }
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
+@media (max-width: 380px) {
+  .pantalla {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+  .categoria .categoria-icono {
+    height: 43px;
+    font-size: 20px;
+  }
 
-  color: #8c8c8c;
+  .categoria small {
+    font-size: 8px;
+  }
 
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+  .foto-restaurante {
+    width: 95px;
+    min-width: 95px;
+  }
 }

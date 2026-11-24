@@ -1,0 +1,106 @@
+
+<ion-content class="login-content">
+
+  <div class="login-container">
+
+    <div class="brand">
+      <div class="brand-icon">
+        <ion-icon name="location-outline"></ion-icon>
+      </div>
+
+      <div class="brand-text">
+        <h2>Pide<span>Local</span></h2>
+        <p>Sabores cerca de ti</p>
+      </div>
+    </div>
+
+    <div class="welcome">
+      <h1>¡Qué bueno verte!</h1>
+      <p>
+        Inicia sesión para pedir en tus
+        restaurantes favoritos.
+      </p>
+    </div>
+
+    <form (ngSubmit)="iniciarSesion()">
+
+      <div class="form-group">
+        <label for="correo">Correo o teléfono</label>
+
+        <ion-input
+          id="correo"
+          name="correo"
+          [(ngModel)]="correo"
+          type="text"
+          fill="outline"
+          placeholder="ejemplo@correo.com">
+        </ion-input>
+      </div>
+
+      <div class="form-group">
+        <div class="password-header">
+          <label for="contrasena">Contraseña</label>
+
+          <button
+            type="button"
+            (click)="recuperarContrasena()">
+            ¿La olvidaste?
+          </button>
+        </div>
+
+        <div class="password-field">
+          <ion-input
+            id="contrasena"
+            name="contrasena"
+            [(ngModel)]="contrasena"
+            [type]="mostrarContrasena ? 'text' : 'password'"
+            placeholder="••••••••">
+          </ion-input>
+
+          <button
+            type="button"
+            aria-label="Mostrar u ocultar contraseña"
+            (click)="alternarContrasena()">
+
+            <ion-icon
+              [name]="mostrarContrasena ? 'eye-off-outline' : 'eye-outline'">
+            </ion-icon>
+
+          </button>
+        </div>
+      </div>
+
+      <ion-button
+        expand="block"
+        type="submit"
+        class="login-button">
+        Iniciar sesión
+        <ion-icon
+          slot="end"
+          name="arrow-forward-outline">
+        </ion-icon>
+      </ion-button>
+
+    </form>
+
+    <div class="divider">
+      <span></span>
+      <small>o</small>
+      <span></span>
+    </div>
+
+    <ion-button
+      expand="block"
+      fill="outline"
+      class="register-button"
+      (click)="crearCuenta()">
+      Crear cuenta
+    </ion-button>
+
+    <p class="terms">
+      Al continuar, aceptas nuestros términos y políticas.
+    </p>
+
+  </div>
+
+</ion-content>

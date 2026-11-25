@@ -1,7 +1,7 @@
 
 <ion-content [fullscreen]="true">
 
-  <div class="pantalla-restaurante">
+  <main class="pantalla-restaurante">
 
     <div class="portada">
 
@@ -10,7 +10,7 @@
         <button
           type="button"
           class="boton-circular"
-          aria-label="Volver a restaurantes"
+          aria-label="Volver"
           (click)="volver()">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </button>
@@ -18,7 +18,7 @@
         <button
           type="button"
           class="boton-circular"
-          aria-label="Agregar o quitar favorito"
+          aria-label="Favorito"
           (click)="alternarFavorito()">
           <ion-icon
             [name]="favorito ? 'heart' : 'heart-outline'">
@@ -27,9 +27,11 @@
 
       </div>
 
-      <div class="imagen-portada">
-        🍔
-      </div>
+      <img
+        class="foto-portada"
+        [src]="productos[0].foto"
+        alt="Hamburguesa de demostración"
+      />
 
     </div>
 
@@ -106,14 +108,21 @@
     <div class="titulo-menu">
 
       <h2>
-        {{ categoriaSeleccionada === 'Todos'
-          ? 'Populares'
-          : categoriaSeleccionada }}
+        {{
+          categoriaSeleccionada === 'Todos'
+            ? 'Populares'
+            : categoriaSeleccionada
+        }}
       </h2>
 
       <p>Los favoritos del barrio</p>
 
     </div>
+
+    <p class="instruccion-gestos">
+      Toca una fotografía para ampliarla.
+      Mantén presionada una fotografía para ver opciones.
+    </p>
 
     <ion-list class="lista-platos">
 
@@ -127,9 +136,25 @@
             type="button"
             class="foto-plato"
             slot="start"
-            [attr.aria-label]="'Ver ' + producto.nombre"
-            (click)="verDetalle(producto)">
-            {{ producto.emoji }}
+            [attr.aria-label]="'Ver foto de ' + producto.nombre"
+            (pointerdown)="comenzarPulsacion($event, producto)"
+            (pointermove)="moverPulsacion($event)"
+            (pointerup)="terminarPulsacion()"
+            (pointercancel)="cancelarPulsacion()"
+            (pointerleave)="cancelarPulsacion()"
+            (contextmenu)="$event.preventDefault()"
+            (click)="tocarFoto(producto)">
+
+            <img
+              [src]="producto.foto"
+              [alt]="producto.nombre"
+              loading="lazy"
+            />
+
+            <span class="icono-ampliar">
+              <ion-icon name="expand-outline"></ion-icon>
+            </span>
+
           </button>
 
           <ion-label class="datos-plato">
@@ -183,14 +208,19 @@
     </ion-list>
 
     <div class="nota-demo">
-      <ion-icon name="information-circle-outline"></ion-icon>
+
+      <ion-icon name="information-circle-outline">
+      </ion-icon>
+
       <p>
-        Restaurante y precios ficticios utilizados
-        para la demostración académica de PideLocal.
+        Fotografías ilustrativas y precios ficticios
+        para la práctica académica.
+        No son productos reales de un restaurante.
       </p>
+
     </div>
 
-  </div>
+  </main>
 
 </ion-content>
 
@@ -223,3 +253,112 @@
   </div>
 
 </ion-footer>
+
+<!-- Visor de fotografía mediante un modal Ionic -->
+
+<ion-modal
+  [isOpen]="productoAmpliado !== null"
+  (didDismiss)="cerrarFoto()">
+
+  <ng-template>
+
+    <div
+      class="modal-foto"
+      *ngIf="productoAmpliado as producto">
+
+      <header class="visor-encabezado">
+
+        <div>
+          <small>FOTOGRAFÍA DEL PRODUCTO</small>
+          <h2>{{ producto.nombre }}</h2>
+        </div>
+
+        <button
+          type="button"
+          class="cerrar-visor"
+          aria-label="Cerrar fotografía"
+          (click)="cerrarFoto()">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </header>
+
+      <div
+        class="zona-zoom"
+        (pointerdown)="zoomInicio($event)"
+        (pointermove)="zoomMover($event)"
+        (pointerup)="zoomFin($event)"
+        (pointercancel)="zoomFin($event)">
+
+        <img
+          class="imagen-grande"
+          [src]="producto.foto"
+          [alt]="producto.nombre"
+          [style.transform]="'scale(' + zoom + ')'"
+          draggable="false"
+        />
+
+      </div>
+
+      <p class="zoom-ayuda">
+        Con dos dedos separa o acerca para ampliar.
+        En la laptop utiliza los botones + y −.
+      </p>
+
+      <div class="controles-zoom">
+
+        <button
+          type="button"
+          (click)="reducirZoom()"
+          [disabled]="zoom <= 1"
+          aria-label="Reducir imagen">
+
+          <ion-icon name="remove-outline"></ion-icon>
+
+        </button>
+
+        <strong>
+          {{ zoom | number:'1.1-1' }}x
+        </strong>
+
+        <button
+          type="button"
+          (click)="aumentarZoom()"
+          [disabled]="zoom >= zoomMax"
+          aria-label="Ampliar imagen">
+
+          <ion-icon name="add-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="reset-zoom"
+        (click)="resetZoom()">
+        Restablecer tamaño
+      </button>
+
+      <p class="descripcion-foto">
+        {{ producto.descripcion }}
+        ·
+        <b>RD${{ producto.precio }}</b>
+      </p>
+
+      <ion-button
+        expand="block"
+        class="boton-agregar-visor"
+        (click)="agregarProducto(producto); cerrarFoto()">
+
+        Agregar al carrito
+
+      </ion-button>
+
+    </div>
+
+  </ng-template>
+
+</ion-modal>

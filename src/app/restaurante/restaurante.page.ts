@@ -1,5 +1,10 @@
 
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  HostListener
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -17,11 +22,13 @@ import {
   IonItemOptions,
   IonItemOption,
   IonFooter,
-  ToastController,
-  AlertController
+  IonModal,
+  AlertController,
+  ToastController
 } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
+
 import {
   arrowBackOutline,
   heartOutline,
@@ -30,6 +37,9 @@ import {
   star,
   bagHandleOutline,
   addOutline,
+  removeOutline,
+  closeOutline,
+  expandOutline,
   informationCircleOutline
 } from 'ionicons/icons';
 
@@ -38,8 +48,8 @@ interface Producto {
   nombre: string;
   descripcion: string;
   precio: number;
-  emoji: string;
   categoria: string;
+  foto: string;
 }
 
 interface ArticuloCarrito {
@@ -53,9 +63,9 @@ interface ArticuloCarrito {
 
 @Component({
   selector: 'app-restaurante',
+  standalone: true,
   templateUrl: './restaurante.page.html',
   styleUrls: ['./restaurante.page.scss'],
-  standalone: true,
   imports: [
     CommonModule,
     IonContent,
@@ -70,10 +80,13 @@ interface ArticuloCarrito {
     IonItemSliding,
     IonItemOptions,
     IonItemOption,
-    IonFooter
+    IonFooter,
+    IonModal
   ]
 })
-export class RestaurantePage {
+export class RestaurantePage implements OnDestroy {
+
+  readonly claveCarrito = 'pidelocal-carrito-v1';
 
   favorito = false;
   categoriaSeleccionada = 'Todos';
@@ -84,35 +97,61 @@ export class RestaurantePage {
       nombre: 'Patio Clásica',
       descripcion: 'Carne, queso, lechuga y salsa de la casa',
       precio: 395,
-      emoji: '🍔',
-      categoria: 'Hamburguesas'
+      categoria: 'Hamburguesas',
+      foto:
+        'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1000&q=85'
     },
     {
       id: 2,
       nombre: 'Pollo Crunch',
       descripcion: 'Pollo crujiente, repollo y mayonesa picante',
       precio: 350,
-      emoji: '🍔',
-      categoria: 'Hamburguesas'
+      categoria: 'Hamburguesas',
+      foto:
+        'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=1000&q=85'
     },
     {
       id: 3,
       nombre: 'Papas Patio',
       descripcion: 'Papas sazonadas con salsa especial',
       precio: 175,
-      emoji: '🍟',
-      categoria: 'Complementos'
+      categoria: 'Complementos',
+      foto:
+        'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=1000&q=85'
     }
   ];
 
   carrito: ArticuloCarrito[] = [];
 
-  readonly claveCarrito = 'pidelocal-carrito-v1';
+  // Visor de imágenes
+  productoAmpliado: Producto | null = null;
+
+  zoom = 1;
+  readonly zoomMax = 4;
+
+  // Seguimiento de los dedos para pinch-to-zoom
+  private dedos = new Map<
+    number,
+    { x: number; y: number }
+  >();
+
+  private distanciaBase = 0;
+  private zoomBase = 1;
+
+  // Control de la pulsación prolongada
+  private pulsacion:
+    ReturnType<typeof setTimeout> | null = null;
+
+  private inicioPulsacion:
+    { x: number; y: number } | null = null;
+
+  private suprimirClick = false;
+  private indicePulsacion: number | null = null;
 
   constructor(
     private router: Router,
-    private toastController: ToastController,
-    private alertController: AlertController
+    private alerts: AlertController,
+    private toasts: ToastController
   ) {
     addIcons({
       arrowBackOutline,
@@ -122,6 +161,9 @@ export class RestaurantePage {
       star,
       bagHandleOutline,
       addOutline,
+      removeOutline,
+      closeOutline,
+      expandOutline,
       informationCircleOutline
     });
 
@@ -132,27 +174,33 @@ export class RestaurantePage {
     this.cargarCarrito();
   }
 
+  ngOnDestroy() {
+    this.cancelarPulsacion();
+    this.dedos.clear();
+  }
+
   get productosFiltrados(): Producto[] {
     if (this.categoriaSeleccionada === 'Todos') {
       return this.productos;
     }
 
     return this.productos.filter(
-      p => p.categoria === this.categoriaSeleccionada
+      producto =>
+        producto.categoria === this.categoriaSeleccionada
     );
   }
 
   get cantidadCarrito(): number {
     return this.carrito.reduce(
-      (total, articulo) => total + articulo.cantidad,
+      (total, producto) => total + producto.cantidad,
       0
     );
   }
 
   get subtotal(): number {
     return this.carrito.reduce(
-      (total, articulo) =>
-        total + articulo.precio * articulo.cantidad,
+      (total, producto) =>
+        total + producto.precio * producto.cantidad,
       0
     );
   }
@@ -160,6 +208,7 @@ export class RestaurantePage {
   cargarCarrito() {
     try {
       const datos = localStorage.getItem(this.claveCarrito);
+
       const articulos = datos ? JSON.parse(datos) : [];
 
       this.carrito = Array.isArray(articulos)
@@ -177,8 +226,8 @@ export class RestaurantePage {
         JSON.stringify(this.carrito)
       );
     } catch {
-      this.mostrarMensaje(
-        'No se pudo guardar el carrito en este navegador.'
+      void this.mensaje(
+        'No se pudo guardar el carrito.'
       );
     }
   }
@@ -187,12 +236,23 @@ export class RestaurantePage {
     this.categoriaSeleccionada = categoria;
   }
 
+  async mensaje(texto: string) {
+    const toast = await this.toasts.create({
+      message: texto,
+      duration: 1400,
+      position: 'bottom',
+      color: 'dark'
+    });
+
+    await toast.present();
+  }
+
   async agregarProducto(
     producto: Producto,
     deslizable?: IonItemSliding
   ) {
     const existente = this.carrito.find(
-      articulo => articulo.id === producto.id
+      item => item.id === producto.id
     );
 
     if (existente) {
@@ -204,7 +264,7 @@ export class RestaurantePage {
         precio: producto.precio,
         cantidad: 1,
         restaurante: 'Burger Patio',
-        emoji: producto.emoji
+        emoji: producto.id === 3 ? '🍟' : '🍔'
       });
     }
 
@@ -214,37 +274,33 @@ export class RestaurantePage {
       await deslizable.close();
     }
 
-    await this.mostrarMensaje(
+    await this.mensaje(
       producto.nombre + ' agregado al carrito'
     );
   }
 
-  async mostrarMensaje(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 1600,
-      position: 'bottom',
-      color: 'dark'
-    });
-
-    await toast.present();
-  }
-
+  // Mostrar información del producto
   async verDetalle(producto: Producto) {
-    const alerta = await this.alertController.create({
+    const alerta = await this.alerts.create({
       header: producto.nombre,
       message:
         producto.descripcion +
-        '\n\nPrecio: RD$' + producto.precio,
+        ' · RD$' + producto.precio,
       buttons: [
         {
           text: 'Cerrar',
           role: 'cancel'
         },
         {
+          text: 'Ver fotografía',
+          handler: () => {
+            this.abrirFoto(producto);
+          }
+        },
+        {
           text: 'Agregar',
           handler: () => {
-            this.agregarProducto(producto);
+            void this.agregarProducto(producto);
           }
         }
       ]
@@ -253,15 +309,236 @@ export class RestaurantePage {
     await alerta.present();
   }
 
+  // LONG-PRESS
+  // Mantener presionada la fotografía durante 750 ms.
+
+  comenzarPulsacion(
+    evento: PointerEvent,
+    producto: Producto
+  ) {
+    if (
+      evento.pointerType === 'mouse' &&
+      evento.button !== 0
+    ) {
+      return;
+    }
+
+    this.cancelarPulsacion();
+
+    this.suprimirClick = false;
+    this.indicePulsacion = evento.pointerId;
+
+    this.inicioPulsacion = {
+      x: evento.clientX,
+      y: evento.clientY
+    };
+
+    this.pulsacion = setTimeout(() => {
+      this.pulsacion = null;
+      this.suprimirClick = true;
+      this.inicioPulsacion = null;
+
+      void this.opcionesPulsacion(producto);
+    }, 750);
+  }
+
+  moverPulsacion(evento: PointerEvent) {
+    if (
+      this.indicePulsacion !== evento.pointerId ||
+      !this.inicioPulsacion
+    ) {
+      return;
+    }
+
+    const distancia = Math.hypot(
+      evento.clientX - this.inicioPulsacion.x,
+      evento.clientY - this.inicioPulsacion.y
+    );
+
+    if (distancia > 12) {
+      this.cancelarPulsacion();
+    }
+  }
+
+  terminarPulsacion() {
+    if (this.pulsacion) {
+      clearTimeout(this.pulsacion);
+    }
+
+    this.pulsacion = null;
+    this.inicioPulsacion = null;
+    this.indicePulsacion = null;
+  }
+
+  cancelarPulsacion() {
+    this.terminarPulsacion();
+  }
+
+  // Un clic corto abre la fotografía.
+  // Un clic prolongado abre las opciones.
+
+  tocarFoto(producto: Producto) {
+    if (this.suprimirClick) {
+      this.suprimirClick = false;
+      return;
+    }
+
+    this.abrirFoto(producto);
+  }
+
+  async opcionesPulsacion(producto: Producto) {
+    const alerta = await this.alerts.create({
+      header: 'Opciones del producto',
+      subHeader: producto.nombre,
+      message: 'Pulsación prolongada detectada.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Ver fotografía',
+          handler: () => {
+            this.abrirFoto(producto);
+          }
+        },
+        {
+          text: 'Ver detalles',
+          handler: () => {
+            void this.verDetalle(producto);
+          }
+        },
+        {
+          text: 'Agregar al carrito',
+          handler: () => {
+            void this.agregarProducto(producto);
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
+  }
+
+  // VISOR DE FOTOGRAFÍAS
+
+  abrirFoto(producto: Producto) {
+    this.cancelarPulsacion();
+
+    this.productoAmpliado = producto;
+    this.zoom = 1;
+
+    this.dedos.clear();
+    this.distanciaBase = 0;
+    this.zoomBase = 1;
+  }
+
+  cerrarFoto() {
+    this.productoAmpliado = null;
+    this.zoom = 1;
+
+    this.dedos.clear();
+    this.distanciaBase = 0;
+    this.zoomBase = 1;
+  }
+
+  @HostListener('document:keydown.escape')
+  cerrarConEscape() {
+    if (this.productoAmpliado) {
+      this.cerrarFoto();
+    }
+  }
+
+  // PINCH-TO-ZOOM
+
+  private distancia(): number {
+    const puntos = Array.from(this.dedos.values());
+
+    if (puntos.length !== 2) {
+      return 0;
+    }
+
+    return Math.hypot(
+      puntos[0].x - puntos[1].x,
+      puntos[0].y - puntos[1].y
+    );
+  }
+
+  zoomInicio(evento: PointerEvent) {
+    if (
+      evento.pointerType === 'mouse' &&
+      evento.button !== 0
+    ) {
+      return;
+    }
+
+    this.dedos.set(evento.pointerId, {
+      x: evento.clientX,
+      y: evento.clientY
+    });
+
+    if (this.dedos.size === 2) {
+      this.distanciaBase = this.distancia();
+      this.zoomBase = this.zoom;
+    }
+  }
+
+  zoomMover(evento: PointerEvent) {
+    if (!this.dedos.has(evento.pointerId)) {
+      return;
+    }
+
+    this.dedos.set(evento.pointerId, {
+      x: evento.clientX,
+      y: evento.clientY
+    });
+
+    if (
+      this.dedos.size === 2 &&
+      this.distanciaBase > 0
+    ) {
+      const nuevaEscala =
+        this.zoomBase *
+        this.distancia() /
+        this.distanciaBase;
+
+      this.zoom = Math.min(
+        this.zoomMax,
+        Math.max(1, nuevaEscala)
+      );
+    }
+  }
+
+  zoomFin(evento: PointerEvent) {
+    this.dedos.delete(evento.pointerId);
+
+    this.distanciaBase = 0;
+    this.zoomBase = this.zoom;
+  }
+
+  // Controles para probar desde la laptop.
+
+  aumentarZoom() {
+    this.zoom = Math.min(4, this.zoom + 0.5);
+  }
+
+  reducirZoom() {
+    this.zoom = Math.max(1, this.zoom - 0.5);
+  }
+
+  resetZoom() {
+    this.zoom = 1;
+  }
+
   alternarFavorito() {
     this.favorito = !this.favorito;
   }
 
   volver() {
-    this.router.navigateByUrl('/home');
+    void this.router.navigateByUrl('/home');
   }
 
   abrirCarrito() {
-    this.router.navigateByUrl('/carrito');
+    void this.router.navigateByUrl('/carrito');
   }
 }

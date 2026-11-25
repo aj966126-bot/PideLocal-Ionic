@@ -18,11 +18,14 @@ ion-content {
   height: 235px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    #747a75,
-    #b4b9b5
-  );
+  background: #9a9f9b;
+}
+
+.foto-portada {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.55) brightness(0.78);
 }
 
 .botones-portada {
@@ -38,26 +41,17 @@ ion-content {
 .boton-circular {
   width: 42px;
   height: 42px;
-  background: #fff;
-  color: #222724;
   border: none;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: white;
+  color: #222724;
+  display: grid;
+  place-items: center;
   cursor: pointer;
 
   ion-icon {
     font-size: 23px;
   }
-}
-
-.imagen-portada {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 110px;
 }
 
 .tarjeta-informacion {
@@ -134,8 +128,8 @@ ion-content {
   }
 
   small {
-    color: #858a86;
     font-size: 10px;
+    color: #858a86;
   }
 }
 
@@ -143,10 +137,6 @@ ion-content {
   display: flex;
   align-items: center;
   gap: 5px;
-
-  ion-icon {
-    font-size: 15px;
-  }
 }
 
 .categorias-menu {
@@ -177,7 +167,7 @@ ion-content {
 }
 
 .titulo-menu {
-  padding: 25px 20px 15px;
+  padding: 25px 20px 10px;
 
   h2 {
     font-size: 23px;
@@ -193,16 +183,25 @@ ion-content {
   }
 }
 
+.instruccion-gestos {
+  margin: 0;
+  padding: 0 20px 15px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #858a86;
+}
+
 .lista-platos {
   background: transparent;
   padding: 0 14px;
 }
 
 .plato {
-  --background: #ffffff;
+  --background: white;
   --padding-start: 10px;
   --inner-padding-end: 8px;
   --min-height: 125px;
+
   margin-bottom: 10px;
   border: 1px solid #e1e3e1;
   border-radius: 13px;
@@ -210,22 +209,48 @@ ion-content {
 }
 
 .foto-plato {
+  position: relative;
   width: 85px;
   height: 85px;
   min-width: 85px;
+  padding: 0;
   border: none;
   border-radius: 11px;
-  background: linear-gradient(
-    135deg,
-    #d5d8d5,
-    #eceeec
-  );
-  font-size: 43px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
+  background: #d5d8d5;
   margin-right: 12px;
   cursor: pointer;
+
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    display: block;
+  }
+}
+
+.icono-ampliar {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
+  background: white;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+
+  ion-icon {
+    font-size: 15px;
+    color: #222724;
+  }
 }
 
 .datos-plato {
@@ -247,7 +272,6 @@ ion-content {
   }
 
   strong {
-    display: block;
     color: #222724;
     font-size: 14px;
     font-weight: 800;
@@ -293,8 +317,8 @@ ion-content {
 
 .contenedor-pie {
   max-width: 600px;
+  margin: auto;
   padding: 12px 18px;
-  margin: 0 auto;
 }
 
 .boton-carrito {
@@ -316,6 +340,150 @@ ion-content {
   }
 }
 
+/* Ventana de fotografía */
+
+ion-modal {
+  --width: min(96vw, 520px);
+  --height: auto;
+  --max-height: 95dvh;
+  --border-radius: 18px;
+  --box-shadow: 0 14px 40px #0004;
+}
+
+.modal-foto {
+  overflow: auto;
+  max-height: 95dvh;
+  padding: 18px;
+  background: white;
+  color: #222724;
+}
+
+.visor-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+
+  small {
+    font-size: 10px;
+    color: #858a86;
+    letter-spacing: 0.8px;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin: 4px 0 0;
+    font-weight: 800;
+  }
+}
+
+.cerrar-visor {
+  background: #e9ebe9;
+  color: #222724;
+  border: 0;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.zona-zoom {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  background: #d9ddda;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.imagen-grande {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.zoom-ayuda {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #777c78;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.controles-zoom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+
+  button {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d9dcd9;
+    border-radius: 10px;
+    background: #f2f3f2;
+    color: #222724;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+
+  strong {
+    font-size: 16px;
+    min-width: 48px;
+    text-align: center;
+  }
+}
+
+.reset-zoom {
+  display: block;
+  margin: 10px auto 14px;
+  border: none;
+  background: transparent;
+  text-decoration: underline;
+  color: #555555;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.descripcion-foto {
+  border-top: 1px solid #e1e3e1;
+  padding-top: 12px;
+  font-size: 13px;
+  color: #555555;
+  line-height: 1.45;
+}
+
+.boton-agregar-visor {
+  --background: #222724;
+  --color: white;
+  --border-radius: 9px;
+  --box-shadow: none;
+  text-transform: none;
+  height: 46px;
+}
+
 @media (max-width: 400px) {
   .portada {
     height: 190px;
@@ -325,7 +493,6 @@ ion-content {
     width: 65px;
     min-width: 65px;
     height: 75px;
-    font-size: 34px;
     margin-right: 7px;
   }
 
@@ -339,7 +506,11 @@ ion-content {
     --padding-end: 7px;
   }
 
-  .informacion-entrega .dato strong {
+  .dato strong {
     font-size: 12px;
+  }
+
+  .zona-zoom {
+    height: 235px;
   }
 }

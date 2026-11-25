@@ -1,0 +1,198 @@
+
+<ion-content [fullscreen]="true">
+
+  <main class="pagina-seccion">
+
+    <header class="encabezado">
+
+      <button
+        type="button"
+        class="volver"
+        aria-label="Volver al inicio"
+        (click)="volver()">
+
+        <ion-icon name="arrow-back-outline"></ion-icon>
+
+      </button>
+
+      <div>
+        <small>PID ELOCAL</small>
+        <h1>{{ titulo }}</h1>
+      </div>
+
+    </header>
+
+    <!-- FAVORITOS -->
+
+    <section *ngIf="tipo === 'favoritos'">
+
+      <div class="simbolo">
+        <ion-icon name="heart-outline"></ion-icon>
+      </div>
+
+      <h2>Guarda tus restaurantes favoritos</h2>
+
+      <p class="descripcion">
+        En esta versión académica puedes explorar
+        los restaurantes de demostración.
+        La sincronización de favoritos entre
+        pantallas estará disponible más adelante.
+      </p>
+
+      <ion-card>
+
+        <ion-card-content>
+
+          <div class="restaurante-demo">
+            <div class="emoji">🍔</div>
+
+            <div>
+              <strong>Burger Patio</strong>
+              <p>Hamburguesas y papas</p>
+              <small>20–30 min · Envío RD$60</small>
+            </div>
+          </div>
+
+          <ion-button
+            expand="block"
+            class="boton-oscuro"
+            (click)="abrirRestaurante()">
+            Ver restaurante
+          </ion-button>
+
+        </ion-card-content>
+
+      </ion-card>
+
+    </section>
+
+    <!-- PERFIL -->
+
+    <section *ngIf="tipo === 'perfil'">
+
+      <div class="simbolo">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+
+      <h2>¡Hola, María!</h2>
+
+      <p class="descripcion">
+        Este es el perfil ficticio utilizado
+        para la demostración de PideLocal.
+      </p>
+
+      <ion-card>
+        <ion-card-content>
+
+          <div class="dato">
+            <span>Nombre</span>
+            <strong>María</strong>
+          </div>
+
+          <div class="dato">
+            <span>Tipo de cuenta</span>
+            <strong>Demostración académica</strong>
+          </div>
+
+          <div class="dato">
+            <span>Ubicación de ejemplo</span>
+            <strong>Santiago de los Caballeros</strong>
+          </div>
+
+          <div class="dato">
+            <span>Aplicación</span>
+            <strong>PideLocal</strong>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button
+        expand="block"
+        class="boton-oscuro"
+        (click)="abrirPedidos()">
+
+        <ion-icon
+          slot="start"
+          name="checkmark-circle-outline">
+        </ion-icon>
+
+        Ver mi último pedido
+
+      </ion-button>
+
+    </section>
+
+    <!-- CONFIGURACIÓN -->
+
+    <section *ngIf="tipo === 'configuracion'">
+
+      <div class="simbolo">
+        <ion-icon name="settings-outline"></ion-icon>
+      </div>
+
+      <h2>Preferencias de PideLocal</h2>
+
+      <p class="descripcion">
+        Configura las preferencias locales
+        del prototipo académico.
+      </p>
+
+      <ion-card>
+
+        <ion-card-content>
+
+          <div class="preferencia">
+
+            <div>
+              <strong>Notificaciones de demostración</strong>
+              <p>
+                Guarda esta preferencia
+                en el navegador.
+              </p>
+            </div>
+
+            <ion-toggle
+              aria-label="Notificaciones de demostración"
+              [(ngModel)]="notificaciones"
+              (ionChange)="guardarNotificaciones()">
+            </ion-toggle>
+
+          </div>
+
+        </ion-card-content>
+
+      </ion-card>
+
+      <ion-card>
+
+        <ion-card-content>
+
+          <div class="dato">
+            <span>Idioma</span>
+            <strong>Español</strong>
+          </div>
+
+          <div class="dato">
+            <span>Moneda</span>
+            <strong>Peso dominicano (RD$)</strong>
+          </div>
+
+          <div class="dato">
+            <span>Versión</span>
+            <strong>Prototipo académico</strong>
+          </div>
+
+        </ion-card-content>
+
+      </ion-card>
+
+    </section>
+
+    <p class="nota-final">
+      PideLocal · Sabores cerca de ti
+    </p>
+
+  </main>
+
+</ion-content>

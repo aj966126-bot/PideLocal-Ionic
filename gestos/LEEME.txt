@@ -1,0 +1,32 @@
+﻿AP3 - GESTOS - PIDELOCAL
+
+01. SWIPE PARA ELIMINAR
+Codigo: carrito.page.html y carrito.page.ts.
+Proposito: eliminar productos del carrito mediante
+el deslizamiento lateral de una fila.
+Captura: 01-swipe.png.
+
+02. PULL-TO-REFRESH
+Codigo: home.page.html y home.page.ts.
+Proposito: restablecer la lista local de restaurantes
+al deslizar desde la parte superior.
+Captura: 02-refresher.png.
+
+03. PINCH/ZOOM
+Codigo: restaurante.page.html y restaurante.page.ts.
+Proposito: ampliar una fotografia de comida mediante
+el movimiento de dos dedos.
+Los botones + y - son controles alternativos.
+No sustituyen la demostracion del gesto tactil.
+Captura: 03-pinch.png.
+
+04. LONG-PRESS
+Codigo: restaurante.page.html y restaurante.page.ts.
+Proposito: mostrar acciones de un producto al
+mantener presionada su fotografia.
+Captura: 04-longpress.png.
+
+IMPORTANTE:
+El gesto pinch debe verificarse en una pantalla
+tactil. Si falla, documentar el error y el
+intento de solucion, conforme a la consigna.

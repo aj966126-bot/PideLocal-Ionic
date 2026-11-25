@@ -1,0 +1,14 @@
+﻿AP3 - MENU LATERAL - PIDELOCAL
+
+Componentes: ion-menu e ion-split-pane.
+Incluye encabezado, logotipo, iconos y navegacion.
+
+Codigo:
+app.component.html
+app.component.ts
+app.component.scss
+app.routes.ts
+
+CAPTURAS PENDIENTES:
+01-menu-movil.png
+02-split-pane.png

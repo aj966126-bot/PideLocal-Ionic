@@ -1,0 +1,296 @@
+
+<ion-content [fullscreen]="true">
+
+  <main class="pantalla-carrito">
+
+    <header class="encabezado">
+
+      <button
+        type="button"
+        class="volver"
+        aria-label="Volver al restaurante"
+        (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+
+      <div>
+        <h1>Tu pedido</h1>
+        <p>{{ restaurante }}</p>
+      </div>
+
+    </header>
+
+    <section
+      *ngIf="carrito.length === 0"
+      class="carrito-vacio">
+
+      <div class="icono-vacio">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+      </div>
+
+      <h2>Tu carrito está vacío</h2>
+
+      <p>
+        Explora el menú de Burger Patio y agrega
+        tus platos favoritos.
+      </p>
+
+      <ion-button
+        expand="block"
+        class="boton-principal"
+        (click)="volver()">
+        Explorar menú
+      </ion-button>
+
+    </section>
+
+    <ng-container *ngIf="carrito.length > 0">
+
+      <section class="productos">
+
+        <div class="titulo-seccion">
+          <h2>Productos seleccionados</h2>
+          <span>{{ cantidadArticulos }} artículos</span>
+        </div>
+
+        <p class="ayuda-deslizar">
+          Desliza un producto hacia la izquierda
+          para eliminarlo.
+        </p>
+
+        <ion-list class="lista-productos">
+
+          <ion-item-sliding
+            *ngFor="let articulo of carrito"
+            #deslizable>
+
+            <ion-item lines="none" class="producto">
+
+              <div slot="start" class="foto-producto">
+                {{ articulo.emoji }}
+              </div>
+
+              <ion-label class="datos-producto">
+
+                <h3>{{ articulo.nombre }}</h3>
+
+                <p>{{ articulo.restaurante }}</p>
+
+                <strong>
+                  RD${{ articulo.precio }}
+                </strong>
+
+              </ion-label>
+
+              <div slot="end" class="cantidad">
+
+                <button
+                  type="button"
+                  [attr.aria-label]="'Disminuir ' + articulo.nombre"
+                  (click)="disminuir(articulo)">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </button>
+
+                <span>{{ articulo.cantidad }}</span>
+
+                <button
+                  type="button"
+                  [attr.aria-label]="'Aumentar ' + articulo.nombre"
+                  (click)="aumentar(articulo)">
+                  <ion-icon name="add-outline"></ion-icon>
+                </button>
+
+              </div>
+
+            </ion-item>
+
+            <ion-item-options side="end">
+
+              <ion-item-option
+                color="danger"
+                (click)="eliminar(articulo, deslizable)">
+
+                <ion-icon
+                  slot="top"
+                  name="trash-outline">
+                </ion-icon>
+
+                Eliminar
+
+              </ion-item-option>
+
+            </ion-item-options>
+
+          </ion-item-sliding>
+
+        </ion-list>
+
+      </section>
+
+      <section class="seccion">
+
+        <h2 class="etiqueta">
+          INSTRUCCIONES ESPECIALES
+        </h2>
+
+        <ion-textarea
+          class="instrucciones"
+          fill="outline"
+          placeholder="Ej. Sin cebolla, alergias o detalles para el restaurante..."
+          [autoGrow]="true"
+          [rows]="3"
+          [maxlength]="300"
+          [(ngModel)]="instrucciones">
+        </ion-textarea>
+
+      </section>
+
+      <section class="seccion">
+
+        <h2 class="etiqueta">
+          ¿CÓMO QUIERES RECIBIRLO?
+        </h2>
+
+        <div class="opciones-entrega">
+
+          <button
+            type="button"
+            [class.seleccionado]="modalidad === 'entrega'"
+            (click)="seleccionarModalidad('entrega')">
+            Entrega
+          </button>
+
+          <button
+            type="button"
+            [class.seleccionado]="modalidad === 'recogida'"
+            (click)="seleccionarModalidad('recogida')">
+            Recogida
+          </button>
+
+        </div>
+
+        <ion-card class="tarjeta-direccion">
+
+          <ion-card-content>
+
+            <ion-icon name="location-outline"></ion-icon>
+
+            <div *ngIf="modalidad === 'entrega'">
+
+              <strong>Dirección de entrega</strong>
+
+              <p>{{ direccion }}</p>
+
+            </div>
+
+            <div *ngIf="modalidad === 'recogida'">
+
+              <strong>Recoger en Burger Patio</strong>
+
+              <p>Sin costo de envío.</p>
+
+            </div>
+
+            <button
+              *ngIf="modalidad === 'entrega'"
+              type="button"
+              (click)="cambiarDireccion()">
+              Cambiar
+            </button>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </section>
+
+      <section class="seccion">
+
+        <h2 class="etiqueta">
+          MÉTODO DE PAGO
+        </h2>
+
+        <ion-card class="tarjeta-pago">
+
+          <ion-card-content>
+
+            <div class="icono-pago">
+              <ion-icon name="cash-outline"></ion-icon>
+            </div>
+
+            <div>
+              <strong>Efectivo al recibir</strong>
+              <p>Método de pago de demostración</p>
+            </div>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </section>
+
+      <section class="seccion resumen">
+
+        <h2>Resumen del pedido</h2>
+
+        <div class="fila-total">
+          <span>Subtotal</span>
+          <strong>RD${{ subtotal }}</strong>
+        </div>
+
+        <div class="fila-total">
+          <span>
+            {{ modalidad === 'entrega' ? 'Entrega' : 'Recogida' }}
+          </span>
+
+          <strong>
+            {{ costoEnvio === 0 ? 'Gratis' : 'RD$' + costoEnvio }}
+          </strong>
+        </div>
+
+        <div class="fila-total total-final">
+          <span>Total</span>
+          <strong>RD${{ total }}</strong>
+        </div>
+
+      </section>
+
+      <p class="aviso-demo">
+        Esta aplicación es un prototipo académico.
+        No realiza cobros ni envía pedidos reales.
+      </p>
+
+    </ng-container>
+
+  </main>
+
+</ion-content>
+
+<ion-footer
+  class="pie-confirmacion"
+  *ngIf="carrito.length > 0">
+
+  <div class="contenedor-confirmacion">
+
+    <ion-button
+      expand="block"
+      class="boton-principal"
+      [disabled]="confirmando"
+      (click)="confirmarPedido()">
+
+      <ion-icon
+        slot="start"
+        name="checkmark-circle-outline">
+      </ion-icon>
+
+      <span>Confirmar pedido</span>
+
+      <strong slot="end">
+        RD${{ total }}
+      </strong>
+
+    </ion-button>
+
+  </div>
+
+</ion-footer>

@@ -1,0 +1,20 @@
+﻿AP3 - INTERFACES - PIDELOCAL
+
+01. Inicio y restaurantes
+Componentes: ion-card, ion-list, ion-refresher, ion-fab.
+Archivos: home.page.html, home.page.ts, home.page.scss.
+
+02. Menu de Burger Patio
+Componentes: ion-card, ion-list, ion-item-sliding.
+Archivos: restaurante.page.html, restaurante.page.ts,
+restaurante.page.scss.
+
+03. Carrito de compras
+Componentes: ion-card, ion-list, ion-item-sliding.
+Archivos: carrito.page.html, carrito.page.ts,
+carrito.page.scss.
+
+CAPTURAS PENDIENTES:
+01-inicio.png
+02-restaurante.png
+03-carrito.png

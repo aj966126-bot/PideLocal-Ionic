@@ -1,1 +1,1 @@
-﻿PENDIENTE: escribir aqui la URL real del repositorio.
+﻿https://github.com/aj966126-bot/PideLocal-Ionic
